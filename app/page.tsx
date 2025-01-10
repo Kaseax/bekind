@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import toast from "react-hot-toast";
 
 export default function Home() {
-    const [currentAct, setCurrentAct] = useState<{ act?: string; id?: number } | undefined>(undefined);
+    const [currentAct, setCurrentAct] = useState<{ act?: string; actId?: number } | undefined>(undefined);
     const [suggestion, setSuggestion] = useState("");
     const [isHeartAnimating, setIsHeartAnimating] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +24,6 @@ export default function Home() {
             const response = await fetch("/api/act", { method: "GET" });
             if (response?.ok) {
                 const data = await response.json();
-                console.log(data);
                 setCurrentAct(data);
                 setIsHeartAnimating(true);
                 setTimeout(() => setIsHeartAnimating(false), 1000);
@@ -37,7 +36,30 @@ export default function Home() {
     }
 
     const handleShare = async () => {
+        console.log("share");
+        console.log(currentAct);
+        if (!currentAct?.actId) {
+            toast.error("Failed to copy link to clipboard");
+            return;
+        }
 
+        const shareUrl = `${window.location.origin}/share/${currentAct.actId}`;
+
+        if (navigator.share) {
+            await navigator.share({ title: "bekind.", text: currentAct.act, url: shareUrl }).then(() => {
+                toast.success("Link copied to clipboard");
+            }).catch((error) => {
+                console.error("Failed to copy link to clipboard", error);
+                toast.error("Failed to copy link to clipboard");
+            });
+        } else {
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                toast.success("Link copied to clipboard");
+            }).catch((error) => {
+                console.error("Failed to copy link to clipboard", error);
+                toast.error("Failed to copy link to clipboard");
+            });
+        }
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
