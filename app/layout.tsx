@@ -6,6 +6,10 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { Github } from "lucide-react";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Analytics } from "@vercel/analytics/react";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
