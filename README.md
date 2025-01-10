@@ -87,5 +87,5 @@ You could help continuing its development by:
 
 ## License
 
-Distributed under the AGPL-3.0 License. See [LICENSE](./LICENSE.md) for more information.
+Distributed under the AGPL-3.0 License. See [LICENSE](./LICENSE) for more information.
 
