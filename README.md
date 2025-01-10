@@ -13,7 +13,7 @@
   </p>
 
 [![GitHub stars](https://img.shields.io/github/stars/kaseax/bekind)](https://github.com/kaseax/bekind/stargazers)
-[![License](https://img.shields.io/github/license/kaseax/bekind)](./LICENSE.md)
+[![License](https://img.shields.io/github/license/kaseax/bekind)](./LICENSE)
 
 </p>
 
