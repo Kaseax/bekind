@@ -6,9 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { Github } from "lucide-react";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Analytics } from "@vercel/analytics/react";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = localFont({
@@ -55,6 +53,8 @@ export default function RootLayout({
         </div>
         <Toaster />
         {children}
+        <Analytics />
+        <SpeedInsights />
       </ThemeProvider>
       <footer className="w-full p-4 absolute bottom-0 left-0 right-0 flex justify-center items-center">
         <p className="text-sm text-muted-foreground opacity-50">
