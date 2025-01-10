@@ -64,20 +64,43 @@ export default function Home() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!suggestion.trim()) return;
+        if (!suggestion.trim()) {
+            toast.error("Suggestion cannot be empty!");
+            return;
+        }
 
         try {
             setIsLoading(true);
-            await fetch("/api/act", { method: "POST", body: JSON.stringify({ suggestion }) });
+
+            const response = await fetch("/api/act", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ suggestion }),
+            });
+
+            if (response.status === 429) {
+                const { reset } = await response.json();
+                const retryAfter = new Date(reset * 1000).toLocaleTimeString();
+                toast.error(`You're sending too many suggestions. Try again after ${retryAfter}.`);
+                return;
+            }
+
+            if (!response.ok) {
+                const { error } = await response.json();
+                throw new Error(error || "Failed to submit suggestion");
+            }
+
             setSuggestion("");
             toast.success("Thank you for your suggestion!");
         } catch (error) {
             console.error("Failed to add suggestion", error);
-            toast.error("Failed to add suggestion");
+            toast.error("Failed to add suggestion. Please try again later.");
         } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     return (
         <main

@@ -1,6 +1,19 @@
 import { db } from "@/lib/db/db";
 import { NextResponse } from "next/server";
 import { suggestions } from "@/lib/db/schema";
+import { Redis } from "@upstash/redis";
+import { Ratelimit } from "@upstash/ratelimit";
+
+const redis = new Redis({
+    url: process.env.UPSTASH_REDIS_REST_URL,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN,
+});
+
+const ratelimit = new Ratelimit({
+    redis,
+    limiter: Ratelimit.fixedWindow(5, "60 s"),
+    analytics: true,
+});
 
 export async function GET() {
     try {
@@ -22,6 +35,13 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+    const clientIp = req.headers.get("x-forwarded-for") || req.headers.get("remote-addr") || "unknown";
+
+    const { success, reset } = await ratelimit.limit(clientIp);
+    if (!success) {
+        return NextResponse.json({ error: "Rate limit exceeded", reset }, { status: 429 });
+    }
+
     try {
         const { suggestion } = await req.json();
         if (!suggestion) {
