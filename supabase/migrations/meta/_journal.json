@@ -15,6 +15,13 @@
       "when": 1736519209933,
       "tag": "0001_breezy_mockingbird",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1736550595729,
+      "tag": "0002_superb_network",
+      "breakpoints": true
     }
   ]
 }
