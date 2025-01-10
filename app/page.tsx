@@ -1,101 +1,114 @@
-import Image from "next/image";
+"use client";
+
+import {useEffect, useState} from "react";
+import { Heart, Sparkles, Share2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import toast from "react-hot-toast";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    const [currentAct, setCurrentAct] = useState<{ act?: string; id?: number } | undefined>(undefined);
+    const [suggestion, setSuggestion] = useState("");
+    const [isHeartAnimating, setIsHeartAnimating] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+    useEffect(() => {
+        generateNew();
+    }, []);
+
+    const generateNew = async () => {
+        try {
+            setIsLoading(true);
+            const response = await fetch("/api/act", { method: "GET" });
+            if (response?.ok) {
+                const data = await response.json();
+                console.log(data);
+                setCurrentAct(data);
+                setIsHeartAnimating(true);
+                setTimeout(() => setIsHeartAnimating(false), 1000);
+            }
+        } catch (error) {
+            console.error("Failed to fetch act", error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    const handleShare = async () => {
+
+    }
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!suggestion.trim()) return;
+
+        try {
+            setIsLoading(true);
+            await fetch("/api/act", { method: "POST", body: JSON.stringify({ suggestion }) });
+            setSuggestion("");
+            toast.success("Thank you for your suggestion!");
+        } catch (error) {
+            console.error("Failed to add suggestion", error);
+            toast.error("Failed to add suggestion");
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    return (
+        <main
+            className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background to-secondary/20 p-4">
+            <Card
+                className="w-full max-w-md border-none bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                <CardHeader className="space-y-4 text-center">
+                    <div className="flex justify-center">
+                        <Heart
+                            className={cn(
+                                "w-12 h-12 text-red-500",
+                                isHeartAnimating && "animate-ping"
+                            )}
+                            fill="currentColor"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <h1 className="text-3xl font-bold tracking-tight">bekind.</h1>
+                        <p className="text-muted-foreground">
+                            Be kind to everyone! A simple act of kindness can brighten someone&apos;s
+                            day and create positivity in our world.
+                        </p>
+                    </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="relative overflow-hidden rounded-lg bg-secondary p-4">
+                        <Sparkles className="absolute right-2 top-2 w-4 h-4 text-yellow-500"/>
+                        <p className="text-lg font-medium pr-6">{currentAct?.act || "Loading..."}</p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        <Button onClick={generateNew} className="w-full" disabled={isLoading}>
+                            {isLoading ? "Loading..." : "Generate New"}
+                        </Button>
+                        <Button onClick={handleShare} variant="secondary" className="w-full">
+                            <Share2 className="mr-2 h-4 w-4"/>
+                            Share
+                        </Button>
+                    </div>
+                </CardContent>
+                <CardFooter>
+                    <form onSubmit={handleSubmit} className="w-full flex gap-2">
+                        <Input
+                            placeholder="Suggest an act"
+                            value={suggestion}
+                            onChange={(e) => setSuggestion(e.target.value)}
+                            className="flex-1"
+                        />
+                        <Button type="submit" variant="outline">
+                            Submit
+                        </Button>
+                    </form>
+                </CardFooter>
+            </Card>
+        </main>
+    );
 }
