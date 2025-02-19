@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Github } from "lucide-react";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Link from "next/link";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -56,10 +57,14 @@ export default function RootLayout({
         <Analytics />
         <SpeedInsights />
       </ThemeProvider>
-      <footer className="w-full p-4 absolute bottom-0 left-0 right-0 flex justify-center items-center">
-        <p className="text-sm text-muted-foreground opacity-50">
+      <footer
+        className="w-full p-4 absolute bottom-0 left-0 right-0 flex justify-between items-center bg-background/80 backdrop-blur-md">
+        <p className="text-sm text-muted-foreground opacity-70">
           bekind. © {new Date().getFullYear()} - Made with ♥️ by Fynn Bauer
         </p>
+        <Link href="/legal/imprint" className="text-sm text-primary hover:underline">
+          Imprint
+        </Link>
       </footer>
       </body>
       </html>
