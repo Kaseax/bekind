@@ -102,7 +102,13 @@ export default function AdminDashboard() {
         .update({ status: "declined" })
         .eq("id", id);
 
-      if (error) throw error;
+      if (error) {
+        toast.error("Failed to decline suggestion.");
+        console.error("Failed to decline suggestion:", error);
+        return;
+      }
+
+      toast.success("Suggestion declined.");
 
       setSuggestions((prev) =>
         prev.map((item) =>
@@ -111,6 +117,7 @@ export default function AdminDashboard() {
       );
     } catch (error) {
       console.error("Failed to decline suggestion:", error);
+      toast.error("Failed to decline suggestion.");
     }
   };
 
