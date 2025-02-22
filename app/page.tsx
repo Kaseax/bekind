@@ -36,8 +36,6 @@ export default function Home() {
     }
 
     const handleShare = async () => {
-        console.log("share");
-        console.log(currentAct);
         if (!currentAct?.actId) {
             toast.error("Failed to copy link to clipboard");
             return;

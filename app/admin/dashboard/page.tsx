@@ -72,11 +72,9 @@ export default function AdminDashboard() {
         return;
       }
 
-      const { data: insertData, error: insertError } = await supabase
+      const { error: insertError } = await supabase
         .from("acts")
         .insert({ act: actText });
-
-      console.log(insertData);
 
       if (insertError) {
         toast.error("Failed to insert act");
