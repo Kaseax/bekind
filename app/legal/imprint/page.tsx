@@ -42,7 +42,7 @@ export default function ImprintPage() {
                   qualified attorney.
                 </p>
                 <p>
-                  This website may contain links to third-party websites. Winterhost is not
+                  This website may contain links to third-party websites. bekind is not
                   responsible for the content or
                   privacy practices of these websites.
                 </p>
