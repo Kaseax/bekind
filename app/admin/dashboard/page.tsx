@@ -128,7 +128,7 @@ export default function AdminDashboard() {
 
   return (
     <main
-      className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background to-secondary/20 p-4">
+      className="min-h-screen flex items-center justify-center bg-linear-to-b from-background to-secondary/20 p-4">
       <Card
         className="w-full max-w-4xl border-none bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 mb-16">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
