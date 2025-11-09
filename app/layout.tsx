@@ -60,7 +60,15 @@ export default function RootLayout({
       <footer
         className="w-full p-4 absolute bottom-0 left-0 right-0 flex justify-between items-center bg-background/80 backdrop-blur-md">
         <p className="text-sm text-muted-foreground opacity-70">
-          bekind. © {new Date().getFullYear()} - Made with ♥️ by Fynn Bauer
+          bekind. © {new Date().getFullYear()} - Made with ♥️ by{' '}
+          <a
+            href="https://fqnn.tech/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-primary transition-colors"
+          >
+            Fynn Bauer
+          </a>
         </p>
         <Link href="/legal/imprint" className="text-sm text-primary hover:underline">
           Imprint
