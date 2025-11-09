@@ -1,16 +1,25 @@
 import { eq } from "drizzle-orm";
-import {db} from "@/lib/db/db";
-import {acts} from "@/lib/db/schema";
-import {NextResponse} from "next/server";
+import { db } from "@/lib/db/db";
+import { acts } from "@/lib/db/schema";
+import { NextResponse } from "next/server";
 
-export async function GET(req: Request, { params }: { params: { id: number } }) {
-    const { id } = params;
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+
+    const numId = Number(id);
+
+    if (!Number.isInteger(numId) || numId <= 0) {
+        return NextResponse.json(
+            { error: "Invalid id" },
+            { status: 400 }
+        )
+    }
 
     try {
         const result = await db
             .select()
             .from(acts)
-            .where(eq(acts.id, id))
+            .where(eq(acts.id, numId))
             .limit(1);
 
         if (result.length === 0) {

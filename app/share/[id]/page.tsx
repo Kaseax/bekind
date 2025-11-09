@@ -41,7 +41,7 @@ export default async function SharePage({ params }: { params: { id: number }}) {
 
     return (
         <main
-            className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background to-secondary/20 p-4">
+            className="min-h-screen flex items-center justify-center bg-linear-to-b from-background to-secondary/20 p-4">
             <Card
                 className="w-full max-w-md border-none bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 <CardHeader className="space-y-4 text-center">
